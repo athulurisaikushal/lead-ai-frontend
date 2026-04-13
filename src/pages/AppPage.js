@@ -6,32 +6,56 @@ export default function AppPage() {
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
     const [loading, setLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
+
+    const BACKEND_URL = "https://lead-ai-backend.onrender.com";
 
     const generate = async () => {
-        if (!input) return;
+        if (!input.trim()) return;
 
         setLoading(true);
+        setOutput("");
+        setCopied(false);
 
         try {
-            const res = await axios.post("https://lead-ai-backend.onrender.com/api/generate", {
-                message: input
-            });
+            // 🔥 Wake up backend (Render sleep fix)
+            await axios.get(`${BACKEND_URL}/api/test`);
+
+            const res = await axios.post(
+                `${BACKEND_URL}/api/generate`,
+                { message: input }
+            );
 
             setOutput(res.data);
+
         } catch (err) {
-            setOutput("⚠️ Error connecting to backend");
+            console.error("ERROR:", err);
+
+            if (err.response) {
+                setOutput(`⚠️ Server error: ${err.response.status}`);
+            } else if (err.request) {
+                setOutput("⚠️ Backend is waking up... try again in a few seconds");
+            } else {
+                setOutput("⚠️ Unexpected error occurred");
+            }
         }
 
         setLoading(false);
     };
 
     const copyText = () => {
+        if (!output) return;
+
         navigator.clipboard.writeText(output);
+        setCopied(true);
+
+        setTimeout(() => setCopied(false), 2000);
     };
 
     const clearAll = () => {
         setInput("");
         setOutput("");
+        setCopied(false);
     };
 
     return (
@@ -52,7 +76,9 @@ export default function AppPage() {
                     borderRadius: "15px",
                     boxShadow: "0 20px 40px rgba(0,0,0,0.2)"
                 }}>
-                    <h2 style={{ textAlign: "center" }}>✨ Generate AI Reply</h2>
+                    <h2 style={{ textAlign: "center" }}>
+                        ✨ Generate AI Reply
+                    </h2>
 
                     <textarea
                         rows="5"
@@ -64,7 +90,8 @@ export default function AppPage() {
                             padding: "12px",
                             borderRadius: "8px",
                             border: "1px solid #ddd",
-                            marginTop: "15px"
+                            marginTop: "15px",
+                            fontSize: "14px"
                         }}
                     />
 
@@ -82,7 +109,7 @@ export default function AppPage() {
                             cursor: "pointer"
                         }}
                     >
-                        {loading ? "Generating..." : "Generate Reply"}
+                        {loading ? "⏳ Generating..." : "🚀 Generate Reply"}
                     </button>
 
                     <div style={{
@@ -90,27 +117,33 @@ export default function AppPage() {
                         padding: "15px",
                         background: "#f9f9f9",
                         borderRadius: "8px",
-                        minHeight: "120px"
+                        minHeight: "120px",
+                        whiteSpace: "pre-wrap",
+                        fontSize: "14px"
                     }}>
                         {loading
                             ? "⏳ Generating response..."
                             : (output || "AI response will appear here...")}
                     </div>
 
-                    <div style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
+                    <div style={{
+                        marginTop: "15px",
+                        display: "flex",
+                        gap: "10px"
+                    }}>
                         <button
                             onClick={copyText}
                             style={{
                                 flex: 1,
                                 padding: "10px",
-                                background: "#28a745",
+                                background: copied ? "#17a2b8" : "#28a745",
                                 color: "white",
                                 border: "none",
                                 borderRadius: "6px",
                                 cursor: "pointer"
                             }}
                         >
-                            Copy
+                            {copied ? "✅ Copied!" : "📋 Copy"}
                         </button>
 
                         <button
@@ -125,7 +158,7 @@ export default function AppPage() {
                                 cursor: "pointer"
                             }}
                         >
-                            Clear
+                            🗑️ Clear
                         </button>
                     </div>
                 </div>
