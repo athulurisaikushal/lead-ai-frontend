@@ -26,7 +26,13 @@ export default function AppPage() {
                 { message: input }
             );
 
-            setOutput(res.data);
+            // ✅ HANDLE BOTH JSON & STRING RESPONSE
+            const aiText =
+                typeof res.data === "string"
+                    ? res.data
+                    : res.data?.choices?.[0]?.message?.content;
+
+            setOutput(aiText || "⚠️ Invalid AI response");
 
         } catch (err) {
             console.error("ERROR:", err);
