@@ -1,45 +1,79 @@
-export default function Navbar() {
-    return (
-        <div style={{
-            position: "sticky",
-            top: 0,
-            background: "white",
-            padding: "15px 60px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-            zIndex: 1000
-        }}>
+import { useNavigate } from "react-router-dom";
 
-            {/* Logo */}
-            <h2 style={{ margin: 0, fontWeight: "bold", color: "#667eea" }}>
+export default function Navbar() {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    const logout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
+    return (
+        <div style={nav}>
+            <h2 style={logo} onClick={() => navigate("/")}>
                 🚀 LeadAI
             </h2>
 
-            {/* Links */}
-            <div style={{ display: "flex", gap: "25px" }}>
-                <a href="/" style={{ textDecoration: "none", color: "#333" }}>Home</a>
-                <a href="/pricing" style={{ textDecoration: "none", color: "#333" }}>Pricing</a>
-                <a href="/about" style={{ textDecoration: "none", color: "#333" }}>About</a>
-                <a href="/faq" style={{ textDecoration: "none", color: "#333" }}>FAQ</a>
+            <div style={links}>
+                <span onClick={() => navigate("/")}>Home</span>
+                <span onClick={() => navigate("/pricing")}>Pricing</span>
+                <span onClick={() => navigate("/about")}>About</span>
+                <span onClick={() => navigate("/faq")}>FAQ</span>
             </div>
 
-            {/* CTA */}
-            <a href="/app">
-                <button style={{
-                    padding: "10px 20px",
-                    background: "#667eea",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    fontWeight: "bold"
-                }}>
-                    Try Now
-                </button>
-            </a>
-
+            <div style={right}>
+                {!token ? (
+                    <>
+                        <button style={outlineBtn} onClick={() => navigate("/login")}>Login</button>
+                        <button style={primaryBtn} onClick={() => navigate("/signup")}>Sign Up</button>
+                    </>
+                ) : (
+                    <>
+                        <button style={primaryBtn} onClick={() => navigate("/app")}>Dashboard</button>
+                        <button style={dangerBtn} onClick={logout}>Logout</button>
+                    </>
+                )}
+            </div>
         </div>
     );
 }
+
+const nav = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "15px 40px",
+    background: "rgba(255,255,255,0.7)",
+    backdropFilter: "blur(12px)",
+    boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
+    position: "sticky",
+    top: 0
+};
+
+const logo = { cursor: "pointer", color: "#667eea" };
+const links = { display: "flex", gap: "20px", cursor: "pointer" };
+const right = { display: "flex", gap: "10px" };
+
+const primaryBtn = {
+    padding: "10px 20px",
+    background: "linear-gradient(135deg,#667eea,#764ba2)",
+    color: "white",
+    border: "none",
+    borderRadius: "8px"
+};
+
+const outlineBtn = {
+    padding: "10px 20px",
+    border: "2px solid #667eea",
+    background: "white",
+    borderRadius: "8px"
+};
+
+const dangerBtn = {
+    padding: "10px 20px",
+    background: "#dc3545",
+    color: "white",
+    border: "none",
+    borderRadius: "8px"
+};

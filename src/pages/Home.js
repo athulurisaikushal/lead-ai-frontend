@@ -1,132 +1,188 @@
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function Home() {
-    return (
-        <div style={{ fontFamily: "Segoe UI" }}>
+    const navigate = useNavigate();
 
+    return (
+        <div>
             <Navbar />
 
-            {/* HERO SECTION */}
-            <div style={{
-                background: "linear-gradient(135deg, #667eea, #764ba2)",
-                color: "white",
-                padding: "140px 20px",
-                textAlign: "center"
-            }}>
-                <h1 style={{
-                    fontSize: "48px",
-                    fontWeight: "bold",
-                    marginBottom: "15px"
-                }}>
-                    Close More Leads with AI
-                </h1>
+            {/* HERO */}
+            <div style={hero}>
+                <motion.h1 initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} style={title}>
+                    AI Customer Replies ⚡
+                </motion.h1>
 
-                <p style={{
-                    fontSize: "20px",
-                    opacity: 0.9,
-                    maxWidth: "600px",
-                    margin: "auto"
-                }}>
-                    Generate high-quality, conversion-focused replies instantly.
-                    Save time and never lose a lead again.
-                </p>
+                <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.3}}>
+                    Generate smart responses instantly and boost engagement
+                </motion.p>
 
-                <div style={{ marginTop: "30px" }}>
-                    <a href="/app">
-                        <button style={{
-                            padding: "14px 30px",
-                            fontSize: "16px",
-                            borderRadius: "10px",
-                            border: "none",
-                            cursor: "pointer",
-                            marginRight: "10px"
-                        }}>
-                            🚀 Try Free
-                        </button>
-                    </a>
-
-                    <a href="/pricing">
-                        <button style={{
-                            padding: "14px 30px",
-                            fontSize: "16px",
-                            borderRadius: "10px",
-                            border: "none",
-                            cursor: "pointer"
-                        }}>
-                            Pricing
-                        </button>
-                    </a>
-                </div>
+                <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.6}}>
+                    <button style={primaryBtn} onClick={()=>navigate("/app")}>Try Now</button>
+                    <button style={outlineBtn} onClick={()=>navigate("/pricing")}>Pricing</button>
+                </motion.div>
             </div>
 
-            {/* PROBLEM SECTION */}
-            <div style={{ padding: "80px 20px", textAlign: "center" }}>
-                <h2>Writing replies takes time...</h2>
-                <p style={{ marginTop: "10px", color: "#555" }}>
-                    You lose leads, customers wait, and opportunities slip away.
-                </p>
-            </div>
-
-            {/* SOLUTION SECTION */}
-            <div style={{ padding: "80px 20px", textAlign: "center", background: "#f9f9f9" }}>
-                <h2>LeadAI solves this instantly</h2>
-                <p style={{ marginTop: "10px", color: "#555" }}>
-                    Just paste a message and get a professional AI reply in seconds.
-                </p>
+            {/* SOCIAL PROOF */}
+            <div style={strip}>
+                <p>Trusted by 1,000+ businesses worldwide 🚀</p>
             </div>
 
             {/* FEATURES */}
-            <div style={{ padding: "80px 20px", textAlign: "center" }}>
-                <h2>What users are saying</h2>
+            <div style={section}>
+                <h2>Why LeadAI?</h2>
 
-                <div style={{
-                    marginTop: "30px",
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "30px",
-                    flexWrap: "wrap"
-                }}>
-                    <div style={{ maxWidth: "250px" }}>
-                        <p>"Saved me hours every day!"</p>
-                        <strong>- Startup Founder</strong>
-                    </div>
-
-                    <div style={{ maxWidth: "250px" }}>
-                        <p>"Replies are super professional."</p>
-                        <strong>- Sales Manager</strong>
-                    </div>
-
-                    <div style={{ maxWidth: "250px" }}>
-                        <p>"Helped increase conversions."</p>
-                        <strong>- Freelancer</strong>
-                    </div>
+                <div style={grid}>
+                    {features.map((f,i)=>(
+                        <motion.div key={i} whileHover={{scale:1.05}} style={card}>
+                            <h3>{f.title}</h3>
+                            <p>{f.desc}</p>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
 
-            {/* CTA */}
-            <div style={{
-                padding: "80px 20px",
-                textAlign: "center",
-                background: "#f4f4f4"
-            }}>
-                <h2>Start using LeadAI today</h2>
-                <p>Join early users and automate your replies</p>
+            {/* HOW IT WORKS */}
+            <div style={sectionLight}>
+                <h2>How it works</h2>
 
-                <a href="/app">
-                    <button style={{
-                        marginTop: "20px",
-                        padding: "12px 30px",
-                        background: "#667eea",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "8px",
-                        cursor: "pointer"
-                    }}>
-                        Get Started
-                    </button>
-                </a>
+                <div style={steps}>
+                    {stepsData.map((s,i)=>(
+                        <div key={i} style={stepCard}>
+                            <h3>{s.title}</h3>
+                            <p>{s.desc}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
+            {/* TESTIMONIALS */}
+            <div style={section}>
+                <h2>What users say</h2>
+
+                <div style={grid}>
+                    {testimonials.map((t,i)=>(
+                        <div key={i} style={card}>
+                            <p>"{t.text}"</p>
+                            <h4>- {t.name}</h4>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* FINAL CTA */}
+            <div style={cta}>
+                <h2>Start using AI today 🚀</h2>
+                <button style={primaryBtn} onClick={()=>navigate("/signup")}>
+                    Get Started
+                </button>
+            </div>
         </div>
     );
 }
+
+/* DATA */
+
+const features = [
+    { title:"⚡ Instant Replies", desc:"Generate responses in seconds" },
+    { title:"🤖 Smart AI", desc:"Understands tone & intent" },
+    { title:"📈 Boost Conversions", desc:"Improve engagement easily" },
+    { title:"💼 Business Ready", desc:"Built for real workflows" }
+];
+
+const stepsData = [
+    { title:"1. Paste Message", desc:"Enter customer query" },
+    { title:"2. Generate AI", desc:"AI processes instantly" },
+    { title:"3. Copy & Use", desc:"Send reply to customer" }
+];
+
+const testimonials = [
+    { name:"John D.", text:"Saved hours of work daily!" },
+    { name:"Sarah K.", text:"Best AI tool for customer replies" },
+    { name:"Mike T.", text:"Increased conversions by 30%" }
+];
+
+/* STYLES */
+
+const hero = {
+    height:"90vh",
+    display:"flex",
+    flexDirection:"column",
+    justifyContent:"center",
+    alignItems:"center",
+    background:"linear-gradient(135deg,#667eea,#764ba2)",
+    color:"white",
+    textAlign:"center"
+};
+
+const title = { fontSize:"42px" };
+
+const strip = {
+    padding:"15px",
+    textAlign:"center",
+    background:"#111",
+    color:"white"
+};
+
+const section = {
+    padding:"60px 20px",
+    textAlign:"center"
+};
+
+const sectionLight = {
+    padding:"60px 20px",
+    textAlign:"center",
+    background:"#f5f7fa"
+};
+
+const grid = {
+    display:"flex",
+    gap:"25px",
+    justifyContent:"center",
+    flexWrap:"wrap"
+};
+
+const card = {
+    width:"230px",
+    padding:"20px",
+    background:"white",
+    borderRadius:"15px",
+    boxShadow:"0 15px 35px rgba(0,0,0,0.1)"
+};
+
+const steps = {
+    display:"flex",
+    justifyContent:"center",
+    gap:"20px"
+};
+
+const stepCard = {
+    padding:"20px",
+    background:"white",
+    borderRadius:"10px"
+};
+
+const cta = {
+    padding:"60px",
+    textAlign:"center",
+    background:"#111",
+    color:"white"
+};
+
+const primaryBtn = {
+    margin:"10px",
+    padding:"12px 25px",
+    background:"linear-gradient(135deg,#ff7eb3,#ff758c)",
+    color:"white",
+    border:"none",
+    borderRadius:"10px"
+};
+
+const outlineBtn = {
+    margin:"10px",
+    padding:"12px 25px",
+    background:"white",
+    borderRadius:"10px"
+};

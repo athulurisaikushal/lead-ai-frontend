@@ -1,97 +1,39 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function Pricing() {
-    return (
-        <div style={{ fontFamily: "Segoe UI" }}>
+    const plans = [
+        { name: "Starter", price: "$0", features: ["10/day"] },
+        { name: "Pro", price: "$19/mo", features: ["Unlimited"] },
+        { name: "Enterprise", price: "Custom", features: ["Team"] }
+    ];
 
+    return (
+        <div>
             <Navbar />
 
-            <div style={{
-                padding: "100px 20px",
-                textAlign: "center"
-            }}>
+            <div style={{ textAlign: "center", padding: "50px" }}>
                 <h1>Pricing</h1>
-                <p style={{ color: "#666", marginTop: "10px" }}>
-                    Simple and transparent pricing
-                </p>
 
-                <div style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "30px",
-                    marginTop: "50px",
-                    flexWrap: "wrap"
-                }}>
-
-                    {/* FREE PLAN */}
-                    <div style={{
-                        width: "280px",
-                        padding: "30px",
-                        borderRadius: "12px",
-                        background: "#f9f9f9",
-                        boxShadow: "0 10px 20px rgba(0,0,0,0.05)"
-                    }}>
-                        <h2>Free</h2>
-                        <h3>$0/month</h3>
-
-                        <ul style={{ textAlign: "left", marginTop: "20px" }}>
-                            <li>✔ Limited AI replies</li>
-                            <li>✔ Basic responses</li>
-                            <li>✔ Standard speed</li>
-                        </ul>
-
-                        <a href="/app">
-                            <button style={{
-                                marginTop: "20px",
-                                width: "100%",
-                                padding: "10px",
-                                borderRadius: "8px",
-                                border: "none",
-                                cursor: "pointer"
-                            }}>
-                                Start Free
-                            </button>
-                        </a>
-                    </div>
-
-                    {/* PRO PLAN */}
-                    <div style={{
-                        width: "280px",
-                        padding: "30px",
-                        borderRadius: "12px",
-                        background: "white",
-                        boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
-                        border: "2px solid #667eea"
-                    }}>
-                        <h2>Pro</h2>
-                        <h3>$10/month</h3>
-
-                        <ul style={{ textAlign: "left", marginTop: "20px" }}>
-                            <li>✔ Unlimited AI replies</li>
-                            <li>✔ Advanced responses</li>
-                            <li>✔ Faster generation</li>
-                            <li>✔ Priority support</li>
-                        </ul>
-
-                        <a href="/app">
-                            <button style={{
-                                marginTop: "20px",
-                                width: "100%",
-                                padding: "10px",
-                                background: "#667eea",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "8px",
-                                cursor: "pointer"
-                            }}>
-                                Upgrade Now
-                            </button>
-                        </a>
-                    </div>
-
+                <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
+                    {plans.map((p, i) => (
+                        <div key={i} style={card}>
+                            <h2>{p.name}</h2>
+                            <h1>{p.price}</h1>
+                            {p.features.map((f, j) => <p key={j}>✔ {f}</p>)}
+                        </div>
+                    ))}
                 </div>
             </div>
 
+            <Footer />
         </div>
     );
 }
+
+const card = {
+    padding: "20px",
+    background: "white",
+    borderRadius: "10px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
+};
